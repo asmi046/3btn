@@ -4,7 +4,9 @@
   "description": "geo-map 3 ботинка",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "send_to_host": "scp -C -r *.php asmi04s9_asmi@asmi04s9.beget.tech:asmi04s9.beget.tech/public_html"
+
   },
   "repository": {
     "type": "git",
