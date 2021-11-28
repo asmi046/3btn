@@ -4,8 +4,13 @@ header("Content-type: text/html; charset=utf-8");
 ini_set("display_errors",1);
 error_reporting(E_ALL); 
 
+define('BASE_NAME', "asmi04s9_3btn");
+define('BASE_HOST', "localhost");
+define('BASE_USER', "asmi04s9_3btn");
+define('BASE_PASS', "i3R5&KGd");
 
-$xml = simplexml_load_file(__DIR__.'/MessageFor_020000000004.xml');
+
+$xml = simplexml_load_file(__DIR__.'/data/MessageFor_020000000004.xml');
 
 $ploschadki = $xml->getNamespaces(); 
 $rows = $xml->xpath('//v8msg:Body');
@@ -16,6 +21,8 @@ foreach ($typeRbXML as $obj) {
 	$typeRbLst[(string)$obj->Ref] = $obj->Description;
 }
 
+var_dump($typeRbLst);
+
 
 $osnIzobrXML = $rows[0]->xpath('//CatalogObject.ТипыРекламныхБлоков');
 $osnIzobrLst = array();
@@ -23,11 +30,16 @@ foreach ($osnIzobrXML as $obj) {
 	$osnIzobrLst[(string)$obj->Ref] = $obj->Description;
 }
 
+var_dump($osnIzobrLst);
+
+
 $raionXML = $rows[0]->xpath('//CatalogObject.Районы');
 $raionLst = array();
 foreach ($raionXML as $obj) {
 	$raionLst[(string)$obj->Ref] = $obj->Description;
 }
+
+var_dump($raionLst);
 
 $gorodXML = $rows[0]->xpath('//CatalogObject.Города');
 $gorodLst = array();
@@ -36,71 +48,57 @@ foreach ($gorodXML as $obj) {
 }
 
 
+var_dump($gorodLst);
+
+
 $priceXML = $rows[0]->xpath('//Row');
 $priceLst = array();
 foreach ($priceXML as $obj) {
 	$priceLst[(string)$obj->ID] = (string)$obj->Price;
 }
 
-echo "<pre>";
-	//var_dump($priceLst);
-echo "</pre>";
-
-
-
 $objectXML = $rows[0]->xpath('//CatalogObject.РекламныеБлоки');
 $objectList = array();
 
-echo "<pre>";
-	var_dump($objectXML);
-echo "</pre>";
+$base_connect = new mysqli(BASE_HOST, BASE_USER, BASE_PASS);
+$base_connect->select_db(BASE_NAME);
+
+if($base_connect->connect_error){
+    die("Ошибка: " . $base_connect->connect_error);
+}
 
 
-// global $wpdb;
-// $wpdb->query("TRUNCATE transfet_base");
+$base_connect->query("TRUNCATE transfet_base");
 
-// $i=1;
+$i=1;
 
-// foreach ($objectXML as $obj) {
+foreach ($objectXML as $obj) {
 
-// 	$arr["npp"] = $i;
-// 	$arr["Ref"] = (string)$obj->Ref;
-	
-	
-// 	$arr["Description"] = (string)$obj->Description;	
-// 	$arr["Code"] = (string)$obj->НомерБлока;
-	
-// 	$arr["Type"] = (string)$typeRbLst[(string)$obj->ТипБлока];
-// 	$arr["Img"] = (string)$obj->ОсновноеИзображение; 
-// 	$arr["ImgMap"] = (string)$obj->ИзображениеНаКарте;
-	
-// 	//$arr["Raion"] = (string)$raionLst[(string)$obj->Район];
-// 	$sep = explode("_",$obj->Описание);
-// 	$arr["Raion"] = (string)($sep[1]);
-	
-// 	$arr["Gorod"] = (string)$gorodLst[(string)$obj->Город];
-	
-// 	$arr["Opisanie"] = (string)$obj->Описание;
-// 	$arr["Osveshenie"] = (string)$obj->Освещение;
-// 	$arr["Koordinati"] = (string)$obj->Координаты;
-	
-// 	$arr["GRP"] = (string)($sep[0]);
-// 	$arr["Price"] = $priceLst[(string)$obj->ID];
-	
-// 	if (!empty($arr["Koordinati"]))
-// 		$arr["Koordinati"] = "[".$arr["Koordinati"]."]";
-	
-// 	$objectList[] = $arr;
+	$result = $base_connect->query("INSERT INTO `transfet_base` (`id`, `npp`, `Ref`, `Description`, `Code`, `Type`, `Img`, `ImgMap`, `Raion`, `Gorod`, `Opisanie`, `Osveshenie`, `Koordinati`, `GRP`, `Price`)".
+		" VALUES ('',". 
+		$i.", ". 
+		"'".(string)$obj->Ref."', ".
+		"'".(string)$obj->Description."', ".
+		"'".(string)$obj->НомерБлока."', ".
+		"'Type', ".
+		"'".(string)$obj->ОсновноеИзображение."', ".
+		"'".(string)$obj->ИзображениеНаКарте."', ".
+		"'Raion', ".
+		"'Gorod', ".
+		"'".(string)$obj->Описание."', ". 
+		"'".(string)$obj->Освещение."', ".
+		"'".(string)$obj->Координаты."', ".
+		"'GRP', ".
+		"'Price');");
 
+	$i++;
 
-// 	global $wpdb;
-// 	$wpdb->insert(
-// 		'transfet_base',
-// 		$arr,
-// 		array( '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%f' )
-// 	);
-// 	$i++;
-// }
+	var_dump($result);
+	var_dump($obj);
+}
 
+echo "Подключение успешно установлено \n\r";
+echo "Данные добавлены \n\r";
+$base_connect->close();
 
 ?>
