@@ -123,11 +123,13 @@ header .container{
 .menu li{
     line-height: 1.2;
     margin-left: 20px;
+    display: flex;
 }
 
 
 .menu li a{
     text-transform: uppercase;
+    margin: auto 0;
 }
 
 .header {
@@ -150,7 +152,7 @@ header .container{
     overflow: hidden;
 }
 .shield__box-title {
-    margin-bottom: 25px;
+    margin: 25px 0;
 }
 .shield__box-title span {
     color: grey;
@@ -225,6 +227,15 @@ header .container{
     flex: 0 1 315px;
     height: auto;
     margin-right: 15px;}
+
+    .tabl-flex__1 {
+        width:40%!important;
+    }
+
+    .tabl-flex__2 {
+        width:60%!important;
+    }
+
 }
 
 @media (max-width: 768px) {
@@ -274,6 +285,15 @@ header .container{
     height: 40px;}
   .main {
     padding: 60px 0 35px 0;}
+
+    .tabl-flex__1 {
+        width:50%!important;
+    }
+
+    .tabl-flex__2 {
+        width:50%!important;
+    }
+
 }
 
 @media (max-width: 414px) {

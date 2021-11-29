@@ -1,5 +1,6 @@
 <?
 
+define('SITE_NAME', "http://asmi04s9.beget.tech/");
 define('BASE_NAME', "asmi04s9_3btn");
 define('BASE_HOST', "localhost");
 define('BASE_USER', "asmi04s9_3btn");

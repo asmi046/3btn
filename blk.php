@@ -13,7 +13,11 @@ if($base_connect->connect_error){
 
 $blkInfo = $base_connect->query("SELECT * FROM `transfet_base` WHERE `Ref` = '".$blk_id."'");
 
-$$blkInfoBase = $blkInfo->fetch_array(MYSQLI_ASSOC);
+$blkInfoBase = $blkInfo->fetch_array(MYSQLI_ASSOC);
+
+// echo "<pre>";
+// print_r($blkInfoBase);
+// echo "</pre>";
 
 ?>
 
@@ -22,7 +26,7 @@ $$blkInfoBase = $blkInfo->fetch_array(MYSQLI_ASSOC);
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta charset="utf-8">
-  <title>Информация по блоку</title>
+  <title>Информация по блоку - <?echo $blkInfoBase["Description"]?></title>
   <link rel="stylesheet" type="text/css" href="style.css"/>
 
   <link rel="icon" type="image/png" href="img/favicons/icon256.png" sizes="256x256">
@@ -53,37 +57,34 @@ $$blkInfoBase = $blkInfo->fetch_array(MYSQLI_ASSOC);
       <div class="container">
 
         <div class="shield__box">
-          <h1 class="shield__box-title"><span>Рекламный блок:</span> 50 лет Октября, 13, нечетная сторона, A</h1>
+          <h1 class="shield__box-title"><span>Рекламный блок:</span> <?echo $blkInfoBase["Description"]?></h1>
           <div class="shield__box-inner">
             <div class="shield__box-img">
-              <img src="img/shield-img.jpg" alt="">
+              <img src="<?echo SITE_NAME;?>/data/<?echo $blkInfoBase["Img"]?>" alt="">
             </div>
             <div style="border:none;" class="tableBlk one-tableBlk">
               <div class="tabl-flex"><div id="cl1h" class="tabl-flex__1 tabl-flex__gr">Город</div>
-              <div id="cl1" class="tabl-flex__2 tabl-flex__gr">Курск</div>
+              <div id="cl1" class="tabl-flex__2 tabl-flex__gr"><?echo $blkInfoBase["Gorod"]?></div>
             </div>
             <div class="tabl-flex"><div id="cl2h" class="tabl-flex__1">Район</div>
-            <div id="cl2" class="tabl-flex__2">Центральный</div>
+            <div id="cl2" class="tabl-flex__2"><?echo $blkInfoBase["Raion"]?><</div>
           </div>
           <div class="tabl-flex"><div id="cl3h" class="tabl-flex__1 tabl-flex__gr">Адрес</div>
-          <div id="cl3" class="tabl-flex__2 tabl-flex__gr">50 лет Октября, 13, нечетная сторона,A</div>
+          <div id="cl3" class="tabl-flex__2 tabl-flex__gr"><?echo $blkInfoBase["Description"]?></div>
         </div>
         <div class="tabl-flex">
           <div id="cl4h" class="tabl-flex__1">Тип конструкции</div>
-          <div id="cl4" class="tabl-flex__2">Щиты 6Х3</div>
+          <div id="cl4" class="tabl-flex__2"><?echo $blkInfoBase["Type"]?></div>
         </div>
         <div class="tabl-flex">
           <div id="cl5h" class="tabl-flex__1 tabl-flex__gr">Освещение</div>
-          <div id="cl5" class="tabl-flex__2 tabl-flex__gr">Да</div>
+          <div id="cl5" class="tabl-flex__2 tabl-flex__gr"><?echo ($blkInfoBase["Osveshenie"] == false)?"Нет":"Есть"?></div>
         </div>
         <div class="tabl-flex">
           <div id="cl6h" class="tabl-flex__1">Код</div>
-          <div id="cl6" class="tabl-flex__2">01-011А</div>
+          <div id="cl6" class="tabl-flex__2"><?echo $blkInfoBase["Code"]?></div>
         </div>
-        <div class="tabl-flex">
-          <div id="cl7h" class="tabl-flex__1 tabl-flex__gr">GRP</div>
-          <div id="cl7" class="tabl-flex__2 tabl-flex__gr">7.52</div>
-        </div>
+        
       </div>
     </div>
     <div id="map" class="shield__box-map"></div>
@@ -94,7 +95,7 @@ $$blkInfoBase = $blkInfo->fetch_array(MYSQLI_ASSOC);
       function init() {
 
         var myMap = new ymaps.Map("map", {
-          center: [51.725541, 36.162382],
+          center: [<?echo $blkInfoBase["Koordinati"]?>],
           zoom: 17,
           // Выключаем все управление картой
           controls: []
@@ -102,10 +103,10 @@ $$blkInfoBase = $blkInfo->fetch_array(MYSQLI_ASSOC);
 
         var myGeoObjects = [];
 
-        myGeoObjects[0] = new ymaps.Placemark([51.725541, 36.162382], {
+        myGeoObjects[0] = new ymaps.Placemark([<?echo $blkInfoBase["Koordinati"]?>], {
         // Свойства. 
         // hintContent: '<div class="map-hint">Авто профи, Курск, ул.Комарова, 16</div>',
-        balloonContent: '<div class="map-hint">"ТРИ БОТИНКА - Рекламное агенство"</div>',
+        balloonContent: '<div class="map-hint"><span>Рекламный блок:</span> <?echo $blkInfoBase["Description"]?></div>',
       }, {
         // Необходимо указать данный тип макета.
         iconLayout: 'default#image',
