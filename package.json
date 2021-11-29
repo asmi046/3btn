@@ -8,6 +8,7 @@
     "send_to_host": "scp -C -r *.php asmi04s9_asmi@asmi04s9.beget.tech:asmi04s9.beget.tech/public_html",
     "send_to_host_ms": "scp -C -r *.css asmi04s9_asmi@asmi04s9.beget.tech:asmi04s9.beget.tech/public_html",
     "send_to_host_img": "scp -C -r img asmi04s9_asmi@asmi04s9.beget.tech:asmi04s9.beget.tech/public_html",
+    "send_to_host_fonts": "scp -C -r fonts asmi04s9_asmi@asmi04s9.beget.tech:asmi04s9.beget.tech/public_html",
     "send_all": "npm run send_to_host && npm run send_to_host_ms && npm run send_to_host_img"
 
 
