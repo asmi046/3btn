@@ -4,13 +4,16 @@ header("Content-type: text/html; charset=utf-8");
 ini_set("display_errors",1);
 error_reporting(E_ALL); 
 
-define('BASE_NAME', "asmi04s9_3btn");
-define('BASE_HOST', "localhost");
-define('BASE_USER', "asmi04s9_3btn");
-define('BASE_PASS', "i3R5&KGd");
+include "setings.php";
 
+$filename = "";
+$fileindir = glob(__DIR__.'/data/*.xml');
 
-$xml = simplexml_load_file(__DIR__.'/data/MessageFor_020000000004.xml');
+if (empty($fileindir)) die("Нет файла с данными! \n\r");
+
+$filename = $fileindir[0];
+
+$xml = simplexml_load_file($filename);
 
 $ploschadki = $xml->getNamespaces(); 
 $rows = $xml->xpath('//v8msg:Body');
@@ -68,11 +71,40 @@ if($base_connect->connect_error){
 }
 
 
-$base_connect->query("TRUNCATE transfet_base");
+
 
 $i=1;
 
 foreach ($objectXML as $obj) {
+
+	$exist = $base_connect->query("SELECT * FROM `transfet_base` WHERE `Ref` = '".(string)$obj->Ref."'");
+
+	$raion = (empty($obj->Район))?"":$raionLst[(string)$obj->Район];
+	$gorod = (empty($obj->Город))?"":$gorodLst[(string)$obj->Город];
+	$price = (empty($priceLst[(string)$obj->ID]))?"":$priceLst[(string)$obj->ID];
+
+	$inputSatatus = "";
+
+	if ( empty($exist) ) {
+
+		$result = $base_connect->query("UPDATE `transfet_base` SET ".
+		"`npp` = ".$i.
+		"`Ref` = '".(string)$obj->Ref."'".
+		"`Description` = '".(string)$obj->Description."'".
+		"`Code` = '".(string)$obj->НомерБлока."'".
+		"`Type` = '".(string)$obj->РекламныйБлок_ТипБлока."'".
+		"`Img` = '".(string)$obj->ОсновноеИзображение."'".
+		"`ImgMap` = '".(string)$obj->ИзображениеНаКарте."'".
+		"`Raion` = '".$raion."'".
+		"`Gorod` = '".$gorod."'".
+		"`Opisanie` = '".(string)$obj->Описание."'".
+		"`Osveshenie` = '".(string)$obj->Освещение."'".
+		"`Koordinati` = '".(string)$obj->Координаты."'".
+		"`GRP` = ''".
+		"`Price` = '".$price."'".
+		" WHERE `transfet_base`.`Ref` = ".(string)$obj->Ref.";");
+		$inputSatatus = "Обновлен";
+	} else {
 
 	$result = $base_connect->query("INSERT INTO `transfet_base` (`id`, `npp`, `Ref`, `Description`, `Code`, `Type`, `Img`, `ImgMap`, `Raion`, `Gorod`, `Opisanie`, `Osveshenie`, `Koordinati`, `GRP`, `Price`)".
 		" VALUES ('',". 
@@ -80,22 +112,26 @@ foreach ($objectXML as $obj) {
 		"'".(string)$obj->Ref."', ".
 		"'".(string)$obj->Description."', ".
 		"'".(string)$obj->НомерБлока."', ".
-		"'Type', ".
+		"'".(string)$obj->РекламныйБлок_ТипБлока."', ".
 		"'".(string)$obj->ОсновноеИзображение."', ".
 		"'".(string)$obj->ИзображениеНаКарте."', ".
-		"'Raion', ".
-		"'Gorod', ".
+		"'".$raion."', ".
+		"'".$gorod."', ".
 		"'".(string)$obj->Описание."', ". 
 		"'".(string)$obj->Освещение."', ".
 		"'".(string)$obj->Координаты."', ".
 		"'GRP', ".
-		"'Price');");
+		"'".$price."');");
+		$inputSatatus = "Добавлен";
+	}
 
 	$i++;
 
-	var_dump($result);
-	var_dump($obj);
+	echo (string)$obj->Ref." -> ".$inputSatatus."\n\r";
 }
+
+
+	
 
 echo "Подключение успешно установлено \n\r";
 echo "Данные добавлены \n\r";

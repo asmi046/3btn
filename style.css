@@ -1,0 +1,42 @@
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+}
+
+section,
+header {
+    width:100%
+}
+
+
+.container {
+    width: 1200px;
+    margin: 0 auto;
+}
+
+header .container{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.logo img{
+    height:50px;
+    width: auto;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+}
+
+.menu li{
+    margin-left: 20px;
+}
+
+
+.menu li a{
+    text-transform: uppercase;
+}
