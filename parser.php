@@ -85,13 +85,13 @@ foreach ($objectXML as $obj) {
 
 	$inputSatatus = "";
 
-	if ( empty($exist) ) {
+	if ( !empty($exist->num_rows) ) {
 
 		$result = $base_connect->query("UPDATE `transfet_base` SET ".
 		"`npp` = ".$i.
 		"`Ref` = '".(string)$obj->Ref."'".
 		"`Description` = '".(string)$obj->Description."'".
-		"`Code` = '".(string)$obj->НомерБлока."'".
+		"`Code` = '".(string)$obj->Code."'".
 		"`Type` = '".(string)$obj->РекламныйБлок_ТипБлока."'".
 		"`Img` = '".(string)$obj->ОсновноеИзображение."'".
 		"`ImgMap` = '".(string)$obj->ИзображениеНаКарте."'".
@@ -111,7 +111,7 @@ foreach ($objectXML as $obj) {
 		$i.", ". 
 		"'".(string)$obj->Ref."', ".
 		"'".(string)$obj->Description."', ".
-		"'".(string)$obj->НомерБлока."', ".
+		"'".(string)$obj->Code."', ".
 		"'".(string)$obj->РекламныйБлок_ТипБлока."', ".
 		"'".(string)$obj->ОсновноеИзображение."', ".
 		"'".(string)$obj->ИзображениеНаКарте."', ".
