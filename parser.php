@@ -1,5 +1,5 @@
 <?php
-// php asmi04s9.beget.tech/public_html/parser.php
+// php map.3bt.ru/docs/parser.php
 header("Content-type: text/html; charset=utf-8");
 ini_set("display_errors",1);
 error_reporting(E_ALL); 
@@ -27,14 +27,13 @@ foreach ($typeRbXML as $obj) {
 var_dump($typeRbLst);
 
 
-$osnIzobrXML = $rows[0]->xpath('//CatalogObject.ТипыРекламныхБлоков');
-$osnIzobrLst = array();
-foreach ($osnIzobrXML as $obj) {
-	$osnIzobrLst[(string)$obj->Ref] = $obj->Description;
+$side_type_xml = $rows[0]->xpath('//CatalogObject.ВидыСторон');
+$side_type = array();
+foreach ($side_type_xml as $obj) {
+	$side_type[(string)$obj->Ref] = (string)$obj->Description;
 }
 
-var_dump($osnIzobrLst);
-
+var_dump($side_type);
 
 $raionXML = $rows[0]->xpath('//CatalogObject.Районы');
 $raionLst = array();
@@ -64,14 +63,12 @@ $objectXML = $rows[0]->xpath('//CatalogObject.РекламныеБлоки');
 $objectList = array();
 
 $base_connect = new mysqli(BASE_HOST, BASE_USER, BASE_PASS);
+$base_connect->set_charset("utf8");
 $base_connect->select_db(BASE_NAME);
 
 if($base_connect->connect_error){
     die("Ошибка: " . $base_connect->connect_error);
 }
-
-
-
 
 $i=1;
 
@@ -81,6 +78,7 @@ foreach ($objectXML as $obj) {
 
 	$raion = (empty($obj->Район))?"":$raionLst[(string)$obj->Район];
 	$gorod = (empty($obj->Город))?"":$gorodLst[(string)$obj->Город];
+	$side = (empty($obj->Сторона))?"":$side_type[(string)$obj->Сторона];
 	$price = (empty($priceLst[(string)$obj->ID]))?"":$priceLst[(string)$obj->ID];
 
 	$inputSatatus = "";
@@ -89,29 +87,33 @@ foreach ($objectXML as $obj) {
 
 		$result = $base_connect->query("UPDATE `transfet_base` SET ".
 		"`npp` = ".$i.
-		"`Ref` = '".(string)$obj->Ref."'".
-		"`Description` = '".(string)$obj->Description."'".
-		"`Code` = '".(string)$obj->Code."'".
-		"`Type` = '".(string)$obj->РекламныйБлок_ТипБлока."'".
-		"`Img` = '".(string)$obj->ОсновноеИзображение."'".
-		"`ImgMap` = '".(string)$obj->ИзображениеНаКарте."'".
-		"`Raion` = '".$raion."'".
-		"`Gorod` = '".$gorod."'".
-		"`Opisanie` = '".(string)$obj->Описание."'".
-		"`Osveshenie` = '".(string)$obj->Освещение."'".
-		"`Koordinati` = '".(string)$obj->Координаты."'".
-		"`GRP` = ''".
-		"`Price` = '".$price."'".
-		" WHERE `transfet_base`.`Ref` = ".(string)$obj->Ref.";");
-		$inputSatatus = "Обновлен";
+		", `Ref` = '".trim((string)$obj->Ref,"¶")."'".
+		", `Description` = '".trim((string)$obj->Description,"¶")."'".
+		", `geo_name` = '".trim((string)$obj->РекламныйБлок_ГеографическаяМетка,"¶")."'".
+		", `Code` = '".trim((string)$obj->Code,"¶")."'".
+		", `side` = '".trim($side,"¶")."'".
+		", `Type` = '".trim((string)$obj->РекламныйБлок_ТипБлока,"¶")."'".
+		", `Img` = '".trim((string)$obj->ОсновноеИзображение,"¶")."'".
+		", `ImgMap` = '".trim((string)$obj->ИзображениеНаКарте,"¶")."'".
+		", `Raion` = '".trim($raion,"¶")."'".
+		", `Gorod` = '".trim($gorod,"¶")."'".
+		", `Opisanie` = '".trim((string)$obj->Описание,"¶")."'".
+		", `Osveshenie` = '".trim((string)$obj->Освещение,"¶")."'".
+		", `Koordinati` = '".trim((string)$obj->Координаты,"¶")."'".
+		", `GRP` = ''".
+		", `Price` = '".trim($price,"¶")."'".
+		" WHERE `transfet_base`.`Ref` = '".(string)$obj->Ref."';");
+		$inputSatatus = "Обновлен " . ($result)?"true":"false";
 	} else {
 
-	$result = $base_connect->query("INSERT INTO `transfet_base` (`id`, `npp`, `Ref`, `Description`, `Code`, `Type`, `Img`, `ImgMap`, `Raion`, `Gorod`, `Opisanie`, `Osveshenie`, `Koordinati`, `GRP`, `Price`)".
+	$result = $base_connect->query("INSERT INTO `transfet_base` (`id`, `npp`, `Ref`, `Description`, `geo_name`, `Code`, `side`, `Type`, `Img`, `ImgMap`, `Raion`, `Gorod`, `Opisanie`, `Osveshenie`, `Koordinati`, `GRP`, `Price`)".
 		" VALUES ('',". 
 		$i.", ". 
 		"'".(string)$obj->Ref."', ".
 		"'".(string)$obj->Description."', ".
+		"'".(string)$obj->РекламныйБлок_ГеографическаяМетка."', ".
 		"'".(string)$obj->Code."', ".
+		"'".$side."', ".
 		"'".(string)$obj->РекламныйБлок_ТипБлока."', ".
 		"'".(string)$obj->ОсновноеИзображение."', ".
 		"'".(string)$obj->ИзображениеНаКарте."', ".
@@ -127,7 +129,7 @@ foreach ($objectXML as $obj) {
 
 	$i++;
 
-	echo (string)$obj->Ref." -> ".$inputSatatus."\n\r";
+	echo (string)$obj->Ref." -> ".$inputSatatus." -> ".$side."\n\r";
 }
 
 

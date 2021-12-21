@@ -1,9 +1,9 @@
 <?
 
-define('SITE_NAME', "http://asmi04s9.beget.tech/");
-define('BASE_NAME', "asmi04s9_3btn");
+define('SITE_NAME', "http://map.3bt.ru");
+define('BASE_NAME', "map1639370_db");
 define('BASE_HOST', "localhost");
-define('BASE_USER', "asmi04s9_3btn");
-define('BASE_PASS', "i3R5&KGd");
+define('BASE_USER', "map1639370_mysql");
+define('BASE_PASS', "JiPpW+q6");
 
 ?>

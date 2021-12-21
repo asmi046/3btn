@@ -5,7 +5,9 @@ include "setings.php";
 $blk_id = $_REQUEST["id"];
 
 $base_connect = new mysqli(BASE_HOST, BASE_USER, BASE_PASS);
+$base_connect->set_charset("utf8");
 $base_connect->select_db(BASE_NAME);
+
 
 if($base_connect->connect_error){
   die("Ошибка: " . $base_connect->connect_error);
@@ -41,7 +43,7 @@ $blkInfoBase = $blkInfo->fetch_array(MYSQLI_ASSOC);
 <body>
   <header class="header">
     <div class="container">
-      <a href="" class="logo">
+      <a href="<? echo SITE_NAME; ?>" class="logo">
         <img src="img/logo.png" alt="">
       </a>
 
@@ -67,7 +69,7 @@ $blkInfoBase = $blkInfo->fetch_array(MYSQLI_ASSOC);
               <div id="cl1" class="tabl-flex__2 tabl-flex__gr"><?echo $blkInfoBase["Gorod"]?></div>
             </div>
             <div class="tabl-flex"><div id="cl2h" class="tabl-flex__1">Район</div>
-            <div id="cl2" class="tabl-flex__2"><?echo $blkInfoBase["Raion"]?><</div>
+            <div id="cl2" class="tabl-flex__2"><?echo $blkInfoBase["Raion"]?></div>
           </div>
           <div class="tabl-flex"><div id="cl3h" class="tabl-flex__1 tabl-flex__gr">Адрес</div>
           <div id="cl3" class="tabl-flex__2 tabl-flex__gr"><?echo $blkInfoBase["Description"]?></div>

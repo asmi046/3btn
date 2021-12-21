@@ -5,11 +5,12 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "send_to_host": "scp -C -r *.php asmi04s9_asmi@asmi04s9.beget.tech:asmi04s9.beget.tech/public_html",
-    "send_to_host_ms": "scp -C -r *.css asmi04s9_asmi@asmi04s9.beget.tech:asmi04s9.beget.tech/public_html",
-    "send_to_host_img": "scp -C -r img asmi04s9_asmi@asmi04s9.beget.tech:asmi04s9.beget.tech/public_html",
-    "send_to_host_fonts": "scp -C -r fonts asmi04s9_asmi@asmi04s9.beget.tech:asmi04s9.beget.tech/public_html",
-    "send_all": "npm run send_to_host && npm run send_to_host_ms && npm run send_to_host_img"
+    "send_to_host": "scp -C -r *.php map1639370@ssh.map1639370.nichost.ru:map.3bt.ru/docs",
+    "send_to_host_ha": "scp -C -r .htaccess map1639370@ssh.map1639370.nichost.ru:map.3bt.ru/docs",
+    "send_to_host_ms": "scp -C -r *.css map1639370@ssh.map1639370.nichost.ru:map.3bt.ru/docs",
+    "send_to_host_img": "scp -C -r img map1639370@ssh.map1639370.nichost.ru:map.3bt.ru/docs",
+    "send_to_host_fonts": "scp -C -r fonts map1639370@ssh.map1639370.nichost.ru:map.3bt.ru/docs",
+    "send_all": "npm run send_to_host && npm run send_to_host_ms && npm run send_to_host_img && npm run send_to_host_fonts"
 
 
 
