@@ -75,8 +75,8 @@ while ($row = $allblk->fetch_array(MYSQLI_ASSOC)) {
       </a>
 
       <ul class = "menu">
-        <li><a href="">К списку поверхностей</a></li>
-        <li><a href="">На основной сайт</a></li>
+        <li><a href="<?echo SITE_NAME?>">К списку поверхностей</a></li>
+        <li><a href="https://www.3bt.ru/">На основной сайт</a></li>
       </ul>
     </div>  
   </header> 
@@ -184,7 +184,7 @@ while ($row = $allblk->fetch_array(MYSQLI_ASSOC)) {
                 for (let i = 0; i<element.Sides.length;  i++)
                 {
                     be += "<a href = 'http://map.3bt.ru/blk?id="+element.Sides[i].Ref+"' class = 'side_lnk'>"
-                        be += element.Sides[i].side
+                        be += (element.Sides[i].side == "")?"A":element.Sides[i].side
                     be += "</a>"
                 }
             be += "</div>"

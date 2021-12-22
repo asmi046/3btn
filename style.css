@@ -271,6 +271,8 @@ header .container{
     border-right: 1px solid lightgray;
     overflow: auto;
     padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
 }
 
 .search_result h2 {
@@ -282,7 +284,6 @@ header .container{
     display: flex;
     flex-direction: column;
     overflow: auto;
-    height: 60vh;
 }
 
 .rBlk {
@@ -425,7 +426,6 @@ header .container{
 
     .resultTable {
         display: none;
-        height: 22vh;
     }
 }
 

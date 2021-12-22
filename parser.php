@@ -71,6 +71,7 @@ if($base_connect->connect_error){
 }
 
 $i=1;
+$deleteCount = 0;
 
 foreach ($objectXML as $obj) {
 
@@ -84,6 +85,12 @@ foreach ($objectXML as $obj) {
 	$inputSatatus = "";
 
 	if ( !empty($exist->num_rows) ) {
+
+		if ((string)$obj->ДатаУдаления !== "0001-01-01T00:00:00") {
+			echo "(Удален) ";
+			$deleteCount++;
+			$resultDelete = $base_connect->query("DELETE FROM `transfet_base` WHERE `transfet_base`.`Ref` = '".(string)$obj->Ref."'");
+		}
 
 		$result = $base_connect->query("UPDATE `transfet_base` SET ".
 		"`npp` = ".$i.
@@ -105,6 +112,11 @@ foreach ($objectXML as $obj) {
 		" WHERE `transfet_base`.`Ref` = '".(string)$obj->Ref."';");
 		$inputSatatus = "Обновлен " . ($result)?"true":"false";
 	} else {
+		
+		if ((string)$obj->ДатаУдаления !== "0001-01-01T00:00:00") {
+			echo "(Помечен как Удаленный) ";
+			continue;
+		}
 
 	$result = $base_connect->query("INSERT INTO `transfet_base` (`id`, `npp`, `Ref`, `Description`, `geo_name`, `Code`, `side`, `Type`, `Img`, `ImgMap`, `Raion`, `Gorod`, `Opisanie`, `Osveshenie`, `Koordinati`, `GRP`, `Price`)".
 		" VALUES ('',". 

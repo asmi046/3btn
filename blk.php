@@ -48,8 +48,8 @@ $blkInfoBase = $blkInfo->fetch_array(MYSQLI_ASSOC);
       </a>
 
       <ul class = "menu">
-        <li><a href="">К списку поверхностей</a></li>
-        <li><a href="">На основной сайт</a></li>
+      <li><a href="<?echo SITE_NAME?>">К списку поверхностей</a></li>
+        <li><a href="https://www.3bt.ru/">На основной сайт</a></li>
       </ul>
     </div>  
   </header> 
