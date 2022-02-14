@@ -189,7 +189,7 @@ while ($row = $allblk->fetch_array(MYSQLI_ASSOC)) {
                 }
             be += "</div>"
           be += "</div>"
-          return be
+          return be;
       }
 
       ymaps.ready(init);
